@@ -19,3 +19,15 @@ jobs:
           mkdir -p public/screenshots
           cp -r cypress/videos/* public/videos || echo "No videos to copy"
           cp -r cypress/screenshots/* public/screenshots || echo "No screenshots to copy"
+
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        with: 
+          name: cypress-videos
+          path: public/videos
+
+      - name: Upload Cypress screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: public/screenshots
