@@ -36,7 +36,7 @@
         } else {
           cy.url().should("include", "/inventory.html");
           // eventueel direct uitloggen
-          cy.get('#react-burger-menu-btn-error').click();
+          cy.get('#react-burger-menu-btn').click();
           cy.get('#logout_sidebar_link').click();
         }
       });
