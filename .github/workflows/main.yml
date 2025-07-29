@@ -8,15 +8,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         continue-on-error: true
 
       - name: Copy test execution videos and screenshots
-        run:
-          mkdir public
-          cp -r cypress/videos public /videos
-          cp -r cypress/screenshots public/screenshots
-        
+        run: |
+          mkdir -p public/videos
+          mkdir -p public/screenshots
+          cp -r cypress/videos/* public/videos || echo "No videos to copy"
+          cp -r cypress/screenshots/* public/screenshots || echo "No screenshots to copy"
