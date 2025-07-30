@@ -20,29 +20,29 @@ jobs:
         run: npm ci
 
       - name: Run Cypress tests in ${{ matrix.browsers }}
-        uses: cypress-io/github-action@v6
-        with:
-          browser: ${{ matrix.browsers }}
-          command: >
-            npx cypress run 
-            --browser ${{ matrix.browsers }} 
-            --reporter mochawesome 
-            --reporter-options reportDir=cypress/reports/${{ matrix.browsers }},overwrite=false,html=false,json=true
+        run: >
+          npx cypress run --browser ${{ matrix.browsers }}
+
+      - name: List JSON report files
+        run: ls -R cypress/results || echo "No results found"
 
       - name: Merge Mochawesome reports
         run: >
-          npx mochawesome-merge cypress/reports/${{ matrix.browsers }}/*.json 
-          > cypress/reports/${{ matrix.browsers }}/merged-reports.json
+          npx mochawesome-merge cypress/results/*.json 
+          > cypress/results/merged-${{ matrix.browsers }}.json
 
       - name: Generate Mochawesome HTML report (inline assets)
         run: >
-          npx marge cypress/reports/${{ matrix.browsers }}/merged-reports.json 
-          --reportDir cypress/reports/${{ matrix.browsers }} 
+          npx marge cypress/results/merged-${{ matrix.browsers }}.json 
+          --reportDir cypress/results 
           -f "${{ matrix.browsers }}-report.html" 
           --inline
+
+      - name: List generated HTML files
+        run: ls -l cypress/results || echo "No HTML report generated"
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
           name: Mochawesome Report - ${{ matrix.browsers }}
-          path: cypress/reports/${{ matrix.browsers }}/${{ matrix.browsers }}-report.html
+          path: cypress/results/${{ matrix.browsers }}-report.html
