@@ -13,35 +13,35 @@ jobs:
         browsers: [chrome, firefox, edge]
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Cypress run in ${{ matrix.browsers }}
+      - name: Run Cypress tests in ${{ matrix.browsers }}
         uses: cypress-io/github-action@v6
         with:
           browser: ${{ matrix.browsers }}
           command: >
             npx cypress run 
-            --browser ${{ matrix.browsers }}
+            --browser ${{ matrix.browsers }} 
             --reporter mochawesome 
             --reporter-options reportDir=cypress/reports/${{ matrix.browsers }},overwrite=false,html=false,json=true
 
-      - name: Merge Mochawesome Reports
+      - name: Merge Mochawesome reports
         run: >
           npx mochawesome-merge cypress/reports/${{ matrix.browsers }}/*.json 
           > cypress/reports/${{ matrix.browsers }}/merged-reports.json
 
-      - name: Generate HTML Report with inline assets
+      - name: Generate Mochawesome HTML report (inline assets)
         run: >
           npx marge cypress/reports/${{ matrix.browsers }}/merged-reports.json 
           --reportDir cypress/reports/${{ matrix.browsers }} 
           -f "${{ matrix.browsers }}-report.html" 
-          --inline
+          --inline=true --inlineAssets=true
 
-      - name: Upload HTML Report
+      - name: Upload HTML report
         uses: actions/upload-artifact@v4
         with:
           name: Mochawesome Report - ${{ matrix.browsers }}
