@@ -36,10 +36,10 @@ jobs:
 
       - name: Generate Mochawesome HTML report (inline assets)
         run: >
-          npx marge cypress/reports/${{ matrix.browsers }}/merged-reports.json 
-          --reportDir cypress/reports/${{ matrix.browsers }} 
-          -f "${{ matrix.browsers }}-report.html" 
-          --inline=true --inlineAssets=true
+          npx marge cypress/reports/${{ matrix.browsers }}/merged-reports.json \
+          --reportDir cypress/reports/${{ matrix.browsers }} \
+          -f "${{ matrix.browsers }}-report.html" \
+          --inline
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
