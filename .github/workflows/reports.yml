@@ -22,10 +22,10 @@ jobs:
             command: npx cypress run --browser ${{ matrix.browsers }} --reporter mochawesome --reporter-options reportDir=cypress/reports/${{ matrix.browsers }}
 
       - name: Merge Mochawesome Reports
-        run: npx mochawesome-merge cypress/reports/${{ matrix.browsers }}/*.json > cypress/reports/$${{ matrix.browsers }}/merged-reports.json
+        run: npx mochawesome-merge cypress/reports/${{ matrix.browsers }}/*.json > cypress/reports/${{ matrix.browsers }}/merged-reports.json
 
       - name: Generate HTML Reports
-        run: npx merge cypress/reports/${{ matrix.browsers }}/merged-reports.json --reportDir cypress/reports/$${{ matrix.browsers }} -f "${{ matrix.browsers }}-report.html"
+        run: npx merge cypress/reports/${{ matrix.browsers }}/merged-reports.json --reportDir cypress/reports/${{ matrix.browsers }} -f "${{ matrix.browsers }}-report.html"
 
       - name: Upload HTML Reports
         uses: actions/upload-artifact@v4
